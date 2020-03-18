@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dxc.community.dao.QuestionsDao">
+    <sql id="BASE_TABLENAME">
+        t_questions
+    </sql>
+    <sql id="TABLENAME_USER">
+        <include refid="com.dxc.community.dao.UserDao.BASE_TABLENAME"></include>
+    </sql>
+    <sql id="BASE_COLUNMS">
+        qid,title,description,
+        tags,gmt_create,gmt_modify,
+        creator,view_count,like_count
+    </sql>
+
+    <insert id="addQuestion" parameterType="com.dxc.community.pojo.QuestionDomain">
+        INSERT INTO
+        <include refid="BASE_TABLENAME"/>
+        <trim prefix="(" suffix=")">
+            title,description,tags,gmt_create,gmt_modify,creator
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")">
+            #{title,jdbcType=VARCHAR},#{description,jdbcType=CLOB},
+            #{tags,jdbcType=VARCHAR}, UNIX_TIMESTAMP(NOW()),
+            UNIX_TIMESTAMP(NOW()),#{creator,jdbcType=VARCHAR}
+        </trim>
+    </insert>
+
+    <delete id="deleteQuestion" parameterType="java.lang.Integer">
+        DELETE FROM
+        <include refid="BASE_TABLENAME"/>
+        WHERE
+        qid=#{qid,jdbcType=INTEGER}
+    </delete>
+
+
+    <select id="getList"
+            parameterType="com.dxc.community.pojo.QuestionDomain"
+            resultType="com.dxc.community.dto.QuestionDto">
+        SELECT
+        <include refid="BASE_COLUNMS"/>,username
+        FROM
+        <include refid="BASE_TABLENAME"/>
+        AS a
+        LEFT JOIN
+        <include refid="TABLENAME_USER"/>
+        AS b ON a.creator=b.uid
+        <where>
+            <if test="title!=null">
+                AND title LIKE CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="creator!=null">
+                AND creator=#{creator,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getById" parameterType="java.lang.Integer"
+            resultType="com.dxc.community.dto.QuestionDto">
+        SELECT
+        <include refid="BASE_COLUNMS"/>,username
+        FROM
+        <include refid="BASE_TABLENAME"/>
+        AS a
+        LEFT JOIN
+        <include refid="TABLENAME_USER"/>
+        AS b ON a.creator=b.uid
+        WHERE
+        qid=#{qid,jdbcType=INTEGER}
+
+    </select>
+</mapper>

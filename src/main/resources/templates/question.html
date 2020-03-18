@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head(${questionDto.title})">
+</head>
+<body style="background-color:#efefef;">
+<div th:replace="comm/NavigationBar ::NavBar"></div>
+<div class="container-fluid" style="margin:30px;background-color:white;">
+    <div class="row">
+        <div class="col-lg-9 col-md-9">
+            <h2>[[${questionDto.title}]]</h2>
+            <label class="text-des">
+                [[${questionDto.tags}]]  |  作者：  <a href="#" th:text="${questionDto.username}"></a>
+                  |  发布时间：  <span th:text="${#dates.format(questionDto.gmt_create*1000,'yyyy-MM-dd')}"></span>
+                  |  阅读数：  <span th:text="${questionDto.view_count}"></span>
+            </label>
+            <hr>
+            <div th:utext="${questionDto.description}"></div>
+            <hr>
+            <label class="text-des">
+                <span th:text="${#dates.format(questionDto.gmt_create*1000,'yyyy-MM-dd')}"></span>
+                <a href="#"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>编辑</a>
+            </label>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>发起人</h4>
+                <div class="media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <img class="media-object img-thumbnail" style="width:64px;height:64px;" src="/img/x.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">[[${questionDto.username}]]</h4>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>相关问题</h4>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="pagination(pageInfo,actionUrl)">
+    <nav aria-label="Page navigation" th:if="${pageInfo.pages>0}">
+        <ul class="pagination">
+            <li>
+                <a th:href="@{${actionUrl}(pageNo=${pageInfo.prePage})}" aria-label="Previous" th:if="${!pageInfo.isFirstPage}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li></li>
+            <li th:each="item : ${pageInfo.navigatepageNums}">
+                <a th:href="@{${actionUrl}(pageNo=${item})}">[[${item}]]</a></li>
+            <li>
+                <a th:href="@{${actionUrl}(pageNo=${pageInfo.prePage})}" aria-label="Next" th:if="${!pageInfo.isLastPage}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

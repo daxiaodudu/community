@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head('个人信息')">
+</head>
+<body style="background-color:#efefef;">
+<div th:replace="comm/NavigationBar ::NavBar"></div>
+<div class="container-fluid" style="margin:30px;background-color:white;">
+    <div class="row">
+        <div class="col-lg-8 col-md-8">
+            <div>
+                <h3></span>[[${profileValue}]]</h3>
+                <hr>
+            </div>
+            <div th:each="item : ${list.list}" class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-thumbnail" style="width:64px;height:64px;" src="/img/x.jpg">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><a th:href="@{/question/{id}(id=${item.qid})}">[[${item.title}]]</a>
+                    </h4>
+                    <label class="text-des">
+                        [[${item.username}]] ·
+                        [[${item.view_count}]]人浏览·[[${item.like_count}]]人关注·发表于:[[${#dates.format(item.gmt_create*1000,'yyyy-MM-dd
+                        HH:mm:ss')}]]
+                    </label>
+                </div>
+            </div>
+            <div th:replace="comm/pagination::pagination(${list},'/profile/'+${profileName})"></div>
+        </div>
+
+        <div class="col-lg-4 col-md-4" style="margin-top: 20px;">
+            <div class="list-group">
+                <a th:href="@{/profile/myQuestion}"
+                   th:class="${(profileName=='myQuestion'?'active ':' ')+'list-group-item '}">
+                    我的问题
+                </a>
+                <a th:href="@{/profile/myFollow}"
+                   th:class="${(profileName=='myFollow'?'active ':' ')+'list-group-item '}">我的关注 <span
+                        class="badge">14</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

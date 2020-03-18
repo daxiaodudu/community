@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head('登录')">
+</head>
+<body style="background-color:#efefef;">
+<div class="container-fluid" style="margin:30px;background-color:white;">
+    <form method="post" th:action="@{/LoginTo}">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control"  id="username" name="username" placeholder="用户名">
+        </div>
+        <div>
+            <label for="pwd">密码</label>
+            <input type="text" class="form-control"  id="pwd" name="pwd" placeholder="密码">
+        </div>
+        <button type="submit" class="btn btn-primary">登陆</button>
+    </form>
+</div>
+</body>
+</html>

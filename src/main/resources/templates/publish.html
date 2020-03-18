@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head('发布问题')">
+</head>
+<body style="background-color:#efefef;">
+<div th:replace="comm/NavigationBar ::NavBar"></div>
+<div class="container-fluid" style="margin:30px;background-color:white;">
+    <div class="alert alert-danger alert-dismissible " th:if="${publishError!=null}"  role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Warning!</strong> <span th:text="${publishError}"></span>
+    </div>
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起问题</h2>
+        <hr/>
+        <form METHOD="post" th:action="@{publish}">
+            <div class="form-group">
+                <label for="title">问题标题（简单扼要）</label>
+                <input type="text" name="title" class="form-control" id="title" placeholder="问题标题">
+            </div>
+            <div class="form-group">
+                <label for="content">问题补充（必填，请参照右侧提示）</label>
+                <textarea name="description" class="form-control" rows="3" id="content"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="tags">输入标签：</label>
+                <input type="text"  name="tags" class="form-control" id="tags" placeholder="输入标签以逗号结束">
+            </div>
+            <button type="submit" style=" float:right; margin-bottom:15px;" class="btn btn-success">提交问题</button>
+        </form>
+    </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+        <h3>问题发起指南</h3>
+        <hr>
+        <ul>
+            <li>问题标题：请使用简明扼要的描述您的问题，不超过50个字</li>
+            <li>问题补充：详细描述您的问题，并确保问题描述的清晰,并提供一些相关信息</li>
+            <li>选择标签：添加一个或多个标签,并用逗号隔开</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
