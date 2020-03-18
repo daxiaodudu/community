@@ -17,12 +17,13 @@
             </div>
             <div th:each="item : ${list.list}" class="media">
                 <div class="media-left">
-                    <a href="#">
+                    <a th:href="@{'/question/'+${item.qid}}">
                         <img class="media-object img-thumbnail" style="width:64px;height:64px;" src="/img/x.jpg">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${item.title}"></h4>
+                    <a th:href="@{'/question/'+${item.qid}}">
+                    <h4 class="media-heading" th:text="${item.title}" ></h4></a>
                     <label class="text-des">
                         [[${item.username}]] ·
                         [[${item.view_count}]]人浏览·[[${item.like_count}]]人关注·发表于:[[${#dates.format(item.gmt_create*1000,'yyyy-MM-dd

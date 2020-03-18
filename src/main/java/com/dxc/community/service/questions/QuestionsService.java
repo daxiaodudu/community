@@ -25,4 +25,9 @@ public interface QuestionsService {
 
     QuestionDto getById(Integer qid);
 
+    ResultInfo editQuestion(QuestionDomain questionDomain);
+
+    void hitLikeCount(Integer qid);
+
+    void hitViewCount(Integer qid);
 }

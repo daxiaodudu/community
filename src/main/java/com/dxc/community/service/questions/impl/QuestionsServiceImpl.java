@@ -12,12 +12,11 @@ import com.dxc.community.service.questions.QuestionsService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.bcel.internal.generic.RET;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * description: QuestionsServiceImpl <br>
@@ -43,7 +42,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             return ResultInfo.fail(ErrorConstant.Question.TAGS_IS_EMPTY);
         if (questionDomain.getTitle().length() > WebConst.MAX_TITLE_COUNT)
             return ResultInfo.fail(ErrorConstant.Question.MAX_TITLE);
-        if (null==questionDomain.getCreator())
+        if (null == questionDomain.getCreator())
             return ResultInfo.fail(ErrorConstant.Question.CREATOR_IS_EMPTY);
 
         try {
@@ -65,22 +64,46 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public PageInfo<QuestionDto> getList(QuestionDomain questionDomain,Integer pageSize,Integer pageNo) {
+    public PageInfo<QuestionDto> getList(QuestionDomain questionDomain, Integer pageSize, Integer pageNo) {
 
         if (null == questionDomain)
             throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
 
-        PageHelper.startPage(pageNo,pageSize);
+        PageHelper.startPage(pageNo, pageSize);
 
-        return  new PageInfo<QuestionDto>(this.questionsDao.getList(questionDomain));
+        return new PageInfo<QuestionDto>(this.questionsDao.getList(questionDomain));
 
     }
 
     @Override
     public QuestionDto getById(Integer qid) {
-      if(null==qid)
-          throw  new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
+        if (null == qid)
+            throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
 
-        return  this.questionsDao.getById(qid);
+        return this.questionsDao.getById(qid);
+    }
+
+    @Override
+    public ResultInfo editQuestion(QuestionDomain questionDomain) {
+        if (null == questionDomain)
+            return ResultInfo.fail(ErrorConstant.Common.INVALID_PARAM);
+        if (null == questionDomain.getQid())
+            return ResultInfo.fail(ErrorConstant.Question.QID_IS_EMPTY);
+        this.questionsDao.editQuestion(questionDomain);
+        return ResultInfo.success();
+    }
+
+    @Override
+    public void hitLikeCount(Integer qid) {
+        if (null == qid)
+            throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
+        this.questionsDao.hitLikeCount(qid);
+    }
+
+    @Override
+    public void hitViewCount(Integer qid) {
+        if (null == qid)
+            throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
+        this.questionsDao.hitViewCount(qid);
     }
 }

@@ -1,6 +1,7 @@
 package com.dxc.community.controller;
 
 import com.dxc.community.constant.WebConst;
+import com.dxc.community.dto.QuestionDto;
 import com.dxc.community.dto.ResultInfo;
 import com.dxc.community.pojo.QuestionDomain;
 import com.dxc.community.service.questions.QuestionsService;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.Cookie;
@@ -29,6 +31,17 @@ public class PublishController {
 
     @GetMapping("publish")
     public String publish() {
+
+        return "publish";
+    }
+
+    @GetMapping("publish/{id}")
+    public String edit(@PathVariable("id") Integer id,
+                       Model model) {
+
+        QuestionDto questionDto = questionsService.getById(id);
+
+        model.addAttribute("questionDto", questionDto);
         return "publish";
     }
 
@@ -37,7 +50,13 @@ public class PublishController {
                          HttpServletRequest httpServletRequest,
                          Model model) {
 
-        ResultInfo resultInfo = questionsService.addQuestion(questionDomain);
+        ResultInfo resultInfo;
+        if (questionDomain.getQid() == null) {
+            resultInfo = questionsService.addQuestion(questionDomain);
+        } else {
+            resultInfo = questionsService.editQuestion(questionDomain);
+        }
+
         if (!resultInfo.isSuccess()) {
             model.addAttribute("publishError", resultInfo.getMsg());
             return "publish";

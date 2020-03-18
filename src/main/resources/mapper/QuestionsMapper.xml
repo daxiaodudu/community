@@ -71,4 +71,40 @@
         qid=#{qid,jdbcType=INTEGER}
 
     </select>
+
+
+    <update id="editQuestion">
+        UPDATE
+        <include refid="BASE_TABLENAME"/>
+        <trim prefix="SET " suffixOverrides=",">
+            <if test="title !=null">
+                title=#{title,jdbcType=VARCHAR},
+            </if>
+            <if test="description !=null">
+                description=#{description,jdbcType=VARCHAR},
+            </if>
+            <if test="tags !=null">
+                tags=#{tags,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        WHERE
+        qid=#{qid,jdbcType=INTEGER}
+    </update>
+
+    <update id="hitLikeCount">
+        UPDATE
+        <include refid="BASE_TABLENAME"/>
+        SET like_count=like_count+1
+        WHERE
+        qid=#{qid,jdbcType=INTEGER}
+    </update>
+
+    <update id="hitViewCount">
+        UPDATE
+        <include refid="BASE_TABLENAME"/>
+        SET view_count=view_count+1
+        WHERE
+        qid=#{qid,jdbcType=INTEGER}
+    </update>
+
 </mapper>

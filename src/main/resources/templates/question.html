@@ -18,7 +18,7 @@
             <hr>
             <label class="text-des">
                 <span th:text="${#dates.format(questionDto.gmt_create*1000,'yyyy-MM-dd')}"></span>
-                <a href="#"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>编辑</a>
+                <a th:href="@{'/publish/'+${questionDto.qid}}" th:if="${session.loginInfo!=null && session.loginInfo.uid==questionDto.creator}"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>编辑</a>
             </label>
         </div>
         <div class="col-lg-3 col-md-3">

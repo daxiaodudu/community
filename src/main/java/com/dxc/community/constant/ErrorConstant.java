@@ -16,6 +16,7 @@ public interface ErrorConstant {
     }
 
     interface Question {
+        static final String QID_IS_EMPTY = "主键不能为空";
         static final String TITLE_IS_EMPTY = "标题不能为空";
         static final String DESCRIPTION_IS_EMPTY = "描述不能为空";
         static final String TAGS_IS_EMPTY = "标签不能为空";

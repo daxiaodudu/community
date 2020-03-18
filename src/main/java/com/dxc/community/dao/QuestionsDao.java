@@ -22,5 +22,11 @@ public interface QuestionsDao {
 
     List<QuestionDto> getList(QuestionDomain questionDomain);
 
-    QuestionDto getById(@Param("qid")Integer qid);
+    QuestionDto getById(@Param("qid") Integer qid);
+
+    int editQuestion(QuestionDomain questionDomain);
+
+    int hitLikeCount(@Param("qid") Integer qid);
+
+    int hitViewCount(@Param("qid") Integer qid);
 }
