@@ -8,6 +8,8 @@ import com.dxc.community.service.questions.QuestionsService;
 import com.dxc.community.service.user.UserService;
 import com.dxc.community.utils.DuDuUtils;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ import java.util.List;
  */
 @Controller
 public class HomeController {
+
+    Logger log = LoggerFactory.getLogger(HomeController.class);
     @Autowired
     private UserService userService;
 
@@ -42,6 +46,7 @@ public class HomeController {
             @RequestParam(value = "pageNo", defaultValue = "1") int pageNo
             , Model model) {
 
+        log.info("进入Index");
         PageInfo<QuestionDto> list = questionsService.getList(new QuestionDomain(), pageSize, pageNo);
         model.addAttribute("list", list);
         return "index";
