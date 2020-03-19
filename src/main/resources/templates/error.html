@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head('错误页')">
+</head>
+<body style="background-color:#efefef;">
+<div class="container-fluid" >
+    <div class="jumbotron">
+        <h1>出错了！！！</h1>
+        <p th:text="${msg}">。。。。。</p>
+        <p><a class="btn btn-primary btn-lg" th:href="@{/}" role="button">回到首页</a></p>
+    </div>
+</div>
+</body>
+</html>

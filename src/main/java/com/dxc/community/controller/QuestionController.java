@@ -1,6 +1,7 @@
 package com.dxc.community.controller;
 
 import com.dxc.community.dto.QuestionDto;
+import com.dxc.community.exception.BusinessException;
 import com.dxc.community.service.questions.QuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id") Integer id,
                            Model model) {
+
         QuestionDto questionDto = questionsService.getById(id);
 
         //增加点击量
