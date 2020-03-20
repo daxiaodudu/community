@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxc.community.dao.ContentsMapper">
+  <resultMap id="BaseResultMap" type="com.dxc.community.pojo.Contents">
+    <constructor>
+      <idArg column="cid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="titlePic" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="slug" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="created" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="modified" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="authorId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tags" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="categories" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="hits" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="commentsNum" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="allowComment" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="allowPing" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="allowFeed" javaType="java.lang.Boolean" jdbcType="BIT" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.dxc.community.pojo.Contents">
+    <constructor>
+      <idArg column="cid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="titlePic" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="slug" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="created" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="modified" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="authorId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tags" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="categories" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="hits" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="commentsNum" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="allowComment" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="allowPing" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="allowFeed" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cid, title, titlePic, slug, created, modified, authorId, type, status, tags, categories, 
+    hits, commentsNum, allowComment, allowPing, allowFeed
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.dxc.community.pojo.ContentsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_contents
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.dxc.community.pojo.ContentsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_contents
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_contents
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_contents
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dxc.community.pojo.ContentsExample">
+    delete from t_contents
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dxc.community.pojo.Contents">
+    insert into t_contents (cid, title, titlePic, 
+      slug, created, modified, 
+      authorId, type, status, 
+      tags, categories, hits, 
+      commentsNum, allowComment, allowPing, 
+      allowFeed, content)
+    values (#{cid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{titlepic,jdbcType=VARCHAR}, 
+      #{slug,jdbcType=VARCHAR}, #{created,jdbcType=INTEGER}, #{modified,jdbcType=INTEGER}, 
+      #{authorid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{tags,jdbcType=VARCHAR}, #{categories,jdbcType=VARCHAR}, #{hits,jdbcType=INTEGER}, 
+      #{commentsnum,jdbcType=INTEGER}, #{allowcomment,jdbcType=BIT}, #{allowping,jdbcType=BIT}, 
+      #{allowfeed,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dxc.community.pojo.Contents">
+    insert into t_contents
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="titlepic != null">
+        titlePic,
+      </if>
+      <if test="slug != null">
+        slug,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="modified != null">
+        modified,
+      </if>
+      <if test="authorid != null">
+        authorId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="tags != null">
+        tags,
+      </if>
+      <if test="categories != null">
+        categories,
+      </if>
+      <if test="hits != null">
+        hits,
+      </if>
+      <if test="commentsnum != null">
+        commentsNum,
+      </if>
+      <if test="allowcomment != null">
+        allowComment,
+      </if>
+      <if test="allowping != null">
+        allowPing,
+      </if>
+      <if test="allowfeed != null">
+        allowFeed,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titlepic != null">
+        #{titlepic,jdbcType=VARCHAR},
+      </if>
+      <if test="slug != null">
+        #{slug,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=INTEGER},
+      </if>
+      <if test="modified != null">
+        #{modified,jdbcType=INTEGER},
+      </if>
+      <if test="authorid != null">
+        #{authorid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null">
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="categories != null">
+        #{categories,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null">
+        #{hits,jdbcType=INTEGER},
+      </if>
+      <if test="commentsnum != null">
+        #{commentsnum,jdbcType=INTEGER},
+      </if>
+      <if test="allowcomment != null">
+        #{allowcomment,jdbcType=BIT},
+      </if>
+      <if test="allowping != null">
+        #{allowping,jdbcType=BIT},
+      </if>
+      <if test="allowfeed != null">
+        #{allowfeed,jdbcType=BIT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dxc.community.pojo.ContentsExample" resultType="java.lang.Long">
+    select count(*) from t_contents
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_contents
+    <set>
+      <if test="record.cid != null">
+        cid = #{record.cid,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.titlepic != null">
+        titlePic = #{record.titlepic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.slug != null">
+        slug = #{record.slug,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=INTEGER},
+      </if>
+      <if test="record.modified != null">
+        modified = #{record.modified,jdbcType=INTEGER},
+      </if>
+      <if test="record.authorid != null">
+        authorId = #{record.authorid,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tags != null">
+        tags = #{record.tags,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categories != null">
+        categories = #{record.categories,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hits != null">
+        hits = #{record.hits,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentsnum != null">
+        commentsNum = #{record.commentsnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.allowcomment != null">
+        allowComment = #{record.allowcomment,jdbcType=BIT},
+      </if>
+      <if test="record.allowping != null">
+        allowPing = #{record.allowping,jdbcType=BIT},
+      </if>
+      <if test="record.allowfeed != null">
+        allowFeed = #{record.allowfeed,jdbcType=BIT},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update t_contents
+    set cid = #{record.cid,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      titlePic = #{record.titlepic,jdbcType=VARCHAR},
+      slug = #{record.slug,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=INTEGER},
+      modified = #{record.modified,jdbcType=INTEGER},
+      authorId = #{record.authorid,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      tags = #{record.tags,jdbcType=VARCHAR},
+      categories = #{record.categories,jdbcType=VARCHAR},
+      hits = #{record.hits,jdbcType=INTEGER},
+      commentsNum = #{record.commentsnum,jdbcType=INTEGER},
+      allowComment = #{record.allowcomment,jdbcType=BIT},
+      allowPing = #{record.allowping,jdbcType=BIT},
+      allowFeed = #{record.allowfeed,jdbcType=BIT},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_contents
+    set cid = #{record.cid,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      titlePic = #{record.titlepic,jdbcType=VARCHAR},
+      slug = #{record.slug,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=INTEGER},
+      modified = #{record.modified,jdbcType=INTEGER},
+      authorId = #{record.authorid,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      tags = #{record.tags,jdbcType=VARCHAR},
+      categories = #{record.categories,jdbcType=VARCHAR},
+      hits = #{record.hits,jdbcType=INTEGER},
+      commentsNum = #{record.commentsnum,jdbcType=INTEGER},
+      allowComment = #{record.allowcomment,jdbcType=BIT},
+      allowPing = #{record.allowping,jdbcType=BIT},
+      allowFeed = #{record.allowfeed,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dxc.community.pojo.Contents">
+    update t_contents
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titlepic != null">
+        titlePic = #{titlepic,jdbcType=VARCHAR},
+      </if>
+      <if test="slug != null">
+        slug = #{slug,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=INTEGER},
+      </if>
+      <if test="modified != null">
+        modified = #{modified,jdbcType=INTEGER},
+      </if>
+      <if test="authorid != null">
+        authorId = #{authorid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null">
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="categories != null">
+        categories = #{categories,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null">
+        hits = #{hits,jdbcType=INTEGER},
+      </if>
+      <if test="commentsnum != null">
+        commentsNum = #{commentsnum,jdbcType=INTEGER},
+      </if>
+      <if test="allowcomment != null">
+        allowComment = #{allowcomment,jdbcType=BIT},
+      </if>
+      <if test="allowping != null">
+        allowPing = #{allowping,jdbcType=BIT},
+      </if>
+      <if test="allowfeed != null">
+        allowFeed = #{allowfeed,jdbcType=BIT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dxc.community.pojo.Contents">
+    update t_contents
+    set title = #{title,jdbcType=VARCHAR},
+      titlePic = #{titlepic,jdbcType=VARCHAR},
+      slug = #{slug,jdbcType=VARCHAR},
+      created = #{created,jdbcType=INTEGER},
+      modified = #{modified,jdbcType=INTEGER},
+      authorId = #{authorid,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      categories = #{categories,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=INTEGER},
+      commentsNum = #{commentsnum,jdbcType=INTEGER},
+      allowComment = #{allowcomment,jdbcType=BIT},
+      allowPing = #{allowping,jdbcType=BIT},
+      allowFeed = #{allowfeed,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dxc.community.pojo.Contents">
+    update t_contents
+    set title = #{title,jdbcType=VARCHAR},
+      titlePic = #{titlepic,jdbcType=VARCHAR},
+      slug = #{slug,jdbcType=VARCHAR},
+      created = #{created,jdbcType=INTEGER},
+      modified = #{modified,jdbcType=INTEGER},
+      authorId = #{authorid,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
+      categories = #{categories,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=INTEGER},
+      commentsNum = #{commentsnum,jdbcType=INTEGER},
+      allowComment = #{allowcomment,jdbcType=BIT},
+      allowPing = #{allowping,jdbcType=BIT},
+      allowFeed = #{allowfeed,jdbcType=BIT}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+</mapper>
