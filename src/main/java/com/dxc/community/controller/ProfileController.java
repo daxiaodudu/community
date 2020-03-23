@@ -1,8 +1,10 @@
 package com.dxc.community.controller;
 
+import com.dxc.community.constant.WebConst;
 import com.dxc.community.constant.WebMapAction;
 import com.dxc.community.dto.QuestionDto;
 import com.dxc.community.pojo.QuestionDomain;
+import com.dxc.community.pojo.UserDomain;
 import com.dxc.community.service.questions.QuestionsService;
 import com.dxc.community.utils.DuDuUtils;
 import com.github.pagehelper.PageInfo;
@@ -32,12 +34,16 @@ public class ProfileController {
     public String profile(
             HttpServletRequest httpServletRequest
             , @PathVariable(name = "action") String action
-            , @RequestParam(name = "pageNo",defaultValue = "1") int pageNo
-            , @RequestParam(name = "pageSize",defaultValue = "10") int pageSize
+            , @RequestParam(name = "pageNo", defaultValue = "1") int pageNo
+            , @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
             , Model model) {
 
         action = StringUtils.isBlank(action) ? "myQuestion" : action;
         QuestionDomain questionDomain = new QuestionDomain();
+
+        UserDomain userDomain = (UserDomain) httpServletRequest.getSession().getAttribute(WebConst.LOGIN_SESSION_KEY);
+
+        questionDomain.setCreator(userDomain.getUid());
 
         PageInfo<QuestionDto> list = questionsService.getList(questionDomain, pageSize, pageNo);
 

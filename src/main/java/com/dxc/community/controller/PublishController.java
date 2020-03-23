@@ -4,6 +4,7 @@ import com.dxc.community.constant.WebConst;
 import com.dxc.community.dto.QuestionDto;
 import com.dxc.community.dto.ResultInfo;
 import com.dxc.community.pojo.QuestionDomain;
+import com.dxc.community.pojo.UserDomain;
 import com.dxc.community.service.questions.QuestionsService;
 import com.dxc.community.utils.DuDuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class PublishController {
     private QuestionsService questionsService;
 
     @GetMapping("publish")
-    public String publish() {
-
+    public String publish(Model model) {
+        model.addAttribute("questionDto", new QuestionDto());
         return "publish";
     }
 
@@ -51,6 +52,12 @@ public class PublishController {
                          Model model) {
 
         ResultInfo resultInfo;
+
+        UserDomain userDomain = (UserDomain) httpServletRequest.getSession()
+                .getAttribute(WebConst.LOGIN_SESSION_KEY);
+
+        questionDomain.setCreator(userDomain.getUid());
+
         if (questionDomain.getQid() == null) {
             resultInfo = questionsService.addQuestion(questionDomain);
         } else {

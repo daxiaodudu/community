@@ -22,6 +22,7 @@ public interface ErrorConstant {
     }
 
     interface Question {
+        static final String QUESTION_IS_NOT_EXIST = "问题不存在";
         static final String QID_IS_EMPTY = "主键不能为空";
         static final String TITLE_IS_EMPTY = "标题不能为空";
         static final String DESCRIPTION_IS_EMPTY = "描述不能为空";
@@ -29,6 +30,13 @@ public interface ErrorConstant {
         static final String CREATOR_IS_EMPTY = "请重新登录";
         static final String MAX_TITLE = "标题字数不能大于" + WebConst.MAX_TITLE_COUNT;
 
+    }
+
+    interface QCOMMENTS {
+        static final String FATHER_IS_INVALID = "主评论不存在或已经删除";
+        static final String PARENT_ID_IS_EMPTY = "父级不能为空";
+        static final String Content_IS_EMPTY = "评论内容不能为空";
+        static final String TYPE_IS_EMPTY = "TYPE 不能为空";
     }
 
 }

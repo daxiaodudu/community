@@ -91,9 +91,9 @@
         <logger name="druid.sql.Statement" level="debug" additivity="false">
             <appender-ref ref="druidSqlRollingFile"/>
         </logger>
-        <logger name="druid.sql.Statement" level="debug" additivity="false">
-            <appender-ref ref="druidSqlRollingFile"/>
-        </logger>
+<!--        <logger name="druid.sql.Statement" level="debug" additivity="false">-->
+<!--            <appender-ref ref="druidSqlRollingFile"/>-->
+<!--        </logger>-->
 
         <!--log4j2 自带过滤日志-->
         <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />

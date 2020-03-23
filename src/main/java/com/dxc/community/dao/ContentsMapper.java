@@ -3,10 +3,8 @@ package com.dxc.community.dao;
 import com.dxc.community.pojo.Contents;
 import com.dxc.community.pojo.ContentsExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-@Mapper
+
 public interface ContentsMapper {
     long countByExample(ContentsExample example);
 
