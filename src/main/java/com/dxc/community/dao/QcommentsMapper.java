@@ -3,8 +3,11 @@ package com.dxc.community.dao;
 import com.dxc.community.pojo.Qcomments;
 import com.dxc.community.pojo.QcommentsExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface QcommentsMapper {
     long countByExample(QcommentsExample example);
 

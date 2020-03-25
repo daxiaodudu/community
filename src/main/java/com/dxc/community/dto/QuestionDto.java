@@ -23,5 +23,6 @@ public class QuestionDto {
     private Integer creator;
     private Integer view_count;
     private Integer like_count;
+    private Integer reply_count;
     private String username;
 }

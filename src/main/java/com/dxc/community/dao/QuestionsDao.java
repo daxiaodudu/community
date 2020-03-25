@@ -29,4 +29,6 @@ public interface QuestionsDao {
     int hitLikeCount(@Param("qid") Integer qid);
 
     int hitViewCount(@Param("qid") Integer qid);
+
+    int hitReplyCount(@Param("qid") Integer qid);
 }

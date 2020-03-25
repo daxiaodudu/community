@@ -10,7 +10,7 @@
     <sql id="BASE_COLUNMS">
         qid,title,description,
         tags,gmt_create,gmt_modify,
-        creator,view_count,like_count
+        creator,view_count,like_count,reply_count
     </sql>
 
     <insert id="addQuestion" parameterType="com.dxc.community.pojo.QuestionDomain">
@@ -107,4 +107,12 @@
         qid=#{qid,jdbcType=INTEGER}
     </update>
 
+    <update id="hitReplyCount">
+
+        UPDATE
+        <include refid="BASE_TABLENAME"/>
+        SET reply_count=reply_count+1
+        WHERE
+        qid=#{qid,jdbcType=INTEGER}
+    </update>
 </mapper>

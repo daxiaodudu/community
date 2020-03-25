@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 
@@ -52,6 +53,7 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
+    @Transactional
     public void insertComment(CommentsDto qcommentsDto) {
         if (null == qcommentsDto)
             throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
@@ -84,7 +86,7 @@ public class CommentsServiceImpl implements CommentsService {
         this.qcommentsMapper.insert(qcomments);
         //添加回复数
         if (qcommentsDto.getType().equals(CommentTypeEnum.COMMENT.getType())) {
-            this.questionsDao.hitViewCount(qcommentsDto.getParent_id().intValue());
+            this.questionsDao.hitReplyCount(qcommentsDto.getParent_id().intValue());
         }
     }
 
