@@ -25,4 +25,6 @@ public interface CommentsService {
     Qcomments getById(Long cid);
 
 
+    void updateLikeComment(Long cid);
+
 }

@@ -15,9 +15,11 @@ public class Qcomments {
 
     private Long likeCount;
 
+    private Long replyCount;
+
     private String content;
 
-    public Qcomments(Long cid, Long parentId, Integer type, Integer creator, Long gmtCreate, Long gmtModified, Long likeCount, String content) {
+    public Qcomments(Long cid, Long parentId, Integer type, Integer creator, Long gmtCreate, Long gmtModified, Long likeCount, Long replyCount, String content) {
         this.cid = cid;
         this.parentId = parentId;
         this.type = type;
@@ -25,6 +27,7 @@ public class Qcomments {
         this.gmtCreate = gmtCreate;
         this.gmtModified = gmtModified;
         this.likeCount = likeCount;
+        this.replyCount = replyCount;
         this.content = content;
     }
 
@@ -86,6 +89,14 @@ public class Qcomments {
 
     public void setLikeCount(Long likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public Long getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Long replyCount) {
+        this.replyCount = replyCount;
     }
 
     public String getContent() {

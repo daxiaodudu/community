@@ -10,6 +10,7 @@
       <arg column="gmt_create" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="gmt_modified" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="like_count" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="reply_count" javaType="java.lang.Long" jdbcType="BIGINT" />
     </constructor>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.dxc.community.pojo.Qcomments">
@@ -21,6 +22,7 @@
       <arg column="gmt_create" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="gmt_modified" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="like_count" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="reply_count" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="content" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
@@ -83,7 +85,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    cid, parent_id, type, creator, gmt_create, gmt_modified, like_count
+    cid, parent_id, type, creator, gmt_create, gmt_modified, like_count, reply_count
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -139,10 +141,12 @@
   <insert id="insert" parameterType="com.dxc.community.pojo.Qcomments">
     insert into t_qcomments (cid, parent_id, type, 
       creator, gmt_create, gmt_modified, 
-      like_count, content)
+      like_count, reply_count, content
+      )
     values (#{cid,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
       #{creator,jdbcType=INTEGER}, #{gmtCreate,jdbcType=BIGINT}, #{gmtModified,jdbcType=BIGINT}, 
-      #{likeCount,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR})
+      #{likeCount,jdbcType=BIGINT}, #{replyCount,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.dxc.community.pojo.Qcomments">
     insert into t_qcomments
@@ -167,6 +171,9 @@
       </if>
       <if test="likeCount != null">
         like_count,
+      </if>
+      <if test="replyCount != null">
+        reply_count,
       </if>
       <if test="content != null">
         content,
@@ -193,6 +200,9 @@
       </if>
       <if test="likeCount != null">
         #{likeCount,jdbcType=BIGINT},
+      </if>
+      <if test="replyCount != null">
+        #{replyCount,jdbcType=BIGINT},
       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
@@ -229,6 +239,9 @@
       <if test="record.likeCount != null">
         like_count = #{record.likeCount,jdbcType=BIGINT},
       </if>
+      <if test="record.replyCount != null">
+        reply_count = #{record.replyCount,jdbcType=BIGINT},
+      </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=LONGVARCHAR},
       </if>
@@ -246,6 +259,7 @@
       gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
       gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
       like_count = #{record.likeCount,jdbcType=BIGINT},
+      reply_count = #{record.replyCount,jdbcType=BIGINT},
       content = #{record.content,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -259,7 +273,8 @@
       creator = #{record.creator,jdbcType=INTEGER},
       gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
       gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
-      like_count = #{record.likeCount,jdbcType=BIGINT}
+      like_count = #{record.likeCount,jdbcType=BIGINT},
+      reply_count = #{record.replyCount,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -285,6 +300,9 @@
       <if test="likeCount != null">
         like_count = #{likeCount,jdbcType=BIGINT},
       </if>
+      <if test="replyCount != null">
+        reply_count = #{replyCount,jdbcType=BIGINT},
+      </if>
       <if test="content != null">
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
@@ -299,6 +317,7 @@
       gmt_create = #{gmtCreate,jdbcType=BIGINT},
       gmt_modified = #{gmtModified,jdbcType=BIGINT},
       like_count = #{likeCount,jdbcType=BIGINT},
+      reply_count = #{replyCount,jdbcType=BIGINT},
       content = #{content,jdbcType=LONGVARCHAR}
     where cid = #{cid,jdbcType=BIGINT}
   </update>
@@ -309,7 +328,8 @@
       creator = #{creator,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=BIGINT},
       gmt_modified = #{gmtModified,jdbcType=BIGINT},
-      like_count = #{likeCount,jdbcType=BIGINT}
+      like_count = #{likeCount,jdbcType=BIGINT},
+      reply_count = #{replyCount,jdbcType=BIGINT}
     where cid = #{cid,jdbcType=BIGINT}
   </update>
 </mapper>

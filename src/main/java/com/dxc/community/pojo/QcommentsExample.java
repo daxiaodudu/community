@@ -523,6 +523,66 @@ public class QcommentsExample {
             addCriterion("like_count not between", value1, value2, "likeCount");
             return (Criteria) this;
         }
+
+        public Criteria andReplyCountIsNull() {
+            addCriterion("reply_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountIsNotNull() {
+            addCriterion("reply_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountEqualTo(Long value) {
+            addCriterion("reply_count =", value, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountNotEqualTo(Long value) {
+            addCriterion("reply_count <>", value, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountGreaterThan(Long value) {
+            addCriterion("reply_count >", value, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountGreaterThanOrEqualTo(Long value) {
+            addCriterion("reply_count >=", value, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountLessThan(Long value) {
+            addCriterion("reply_count <", value, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountLessThanOrEqualTo(Long value) {
+            addCriterion("reply_count <=", value, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountIn(List<Long> values) {
+            addCriterion("reply_count in", values, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountNotIn(List<Long> values) {
+            addCriterion("reply_count not in", values, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountBetween(Long value1, Long value2) {
+            addCriterion("reply_count between", value1, value2, "replyCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyCountNotBetween(Long value1, Long value2) {
+            addCriterion("reply_count not between", value1, value2, "replyCount");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

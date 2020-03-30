@@ -2,6 +2,7 @@ package com.dxc.community.service.comments.impl;
 
 import com.dxc.community.constant.CommentTypeEnum;
 import com.dxc.community.constant.ErrorConstant;
+import com.dxc.community.dao.QcommentExtMapper;
 import com.dxc.community.dao.QcommentsMapper;
 import com.dxc.community.dao.QuestionsDao;
 import com.dxc.community.dto.CommentsDto;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * description: CommentsServiceImpl <br>
@@ -34,6 +36,9 @@ public class CommentsServiceImpl implements CommentsService {
     @Autowired
     private QuestionsDao questionsDao;
 
+    @Autowired
+    private QcommentExtMapper qcommentExtMapper;
+
     @Override
     public PageInfo<Qcomments> getListByParentId(Long parentId, Integer type, int pageSize, int pageNo) {
         if (null == parentId)
@@ -43,8 +48,8 @@ public class CommentsServiceImpl implements CommentsService {
         QcommentsExample qcommentsExample = new QcommentsExample();
         qcommentsExample.createCriteria()
                 .andParentIdEqualTo(parentId).andTypeEqualTo(type);
-
-        return new PageInfo<>(this.qcommentsMapper.selectByExample(qcommentsExample));
+        List<Qcomments> qcomments = this.qcommentsMapper.selectByExampleWithBLOBs(qcommentsExample);
+        return new PageInfo<>(qcomments);
     }
 
     @Override
@@ -83,10 +88,13 @@ public class CommentsServiceImpl implements CommentsService {
         qcomments.setGmtCreate(System.currentTimeMillis());
         qcomments.setGmtModified(System.currentTimeMillis());
         qcomments.setLikeCount(0L);
+        qcomments.setReplyCount(0L);
         this.qcommentsMapper.insert(qcomments);
         //添加回复数
         if (qcommentsDto.getType().equals(CommentTypeEnum.COMMENT.getType())) {
             this.questionsDao.hitReplyCount(qcommentsDto.getParent_id().intValue());
+        } else {
+            this.qcommentExtMapper.hitReplyCount(qcommentsDto.getParent_id());
         }
     }
 
@@ -100,5 +108,14 @@ public class CommentsServiceImpl implements CommentsService {
         if (null == cid)
             throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
         return this.qcommentsMapper.selectByPrimaryKey(cid);
+    }
+
+    @Override
+    public void updateLikeComment(Long cid) {
+        if (null == cid)
+            throw new BusinessException(ErrorConstant.Common.PARAM_IS_EMPTY);
+
+        this.qcommentExtMapper.modifyLike(cid);
+
     }
 }
