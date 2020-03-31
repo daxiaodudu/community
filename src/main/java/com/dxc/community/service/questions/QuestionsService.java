@@ -22,6 +22,7 @@ public interface QuestionsService {
 
     PageInfo<QuestionDto> getList(QuestionDomain questionDomain, Integer pageSize, Integer pageNo);
 
+    List<QuestionDto> getRelatedListById(Integer qid);
 
     QuestionDto getById(Integer qid);
 

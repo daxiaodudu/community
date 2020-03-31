@@ -1,8 +1,11 @@
 package com.dxc.community.dto;
 
+import com.dxc.community.pojo.Tags;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * description: QuestionDto <br>
@@ -17,7 +20,7 @@ public class QuestionDto {
     private Integer qid;
     private String title;
     private String description;
-    private String tags;
+    private List<Tags> tagsList;
     private Long gmt_create;
     private Long gmt_modify;
     private Integer creator;

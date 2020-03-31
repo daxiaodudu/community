@@ -22,6 +22,9 @@ public interface QuestionsDao {
 
     List<QuestionDto> getList(QuestionDomain questionDomain);
 
+    //    根据主键id 查询跟其标签相同的数据
+    List<QuestionDto> getRelatedListById(@Param("qid") Integer qid);
+
     QuestionDto getById(@Param("qid") Integer qid);
 
     int editQuestion(QuestionDomain questionDomain);

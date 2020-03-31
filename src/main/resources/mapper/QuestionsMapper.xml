@@ -7,13 +7,15 @@
     <sql id="TABLENAME_USER">
         <include refid="com.dxc.community.dao.UserDao.BASE_TABLENAME"></include>
     </sql>
+
     <sql id="BASE_COLUNMS">
-        qid,title,description,
+        a.qid,title,description,
         tags,gmt_create,gmt_modify,
         creator,view_count,like_count,reply_count
     </sql>
 
-    <insert id="addQuestion" parameterType="com.dxc.community.pojo.QuestionDomain">
+    <insert id="addQuestion" useGeneratedKeys="true" keyProperty="qid"
+            parameterType="com.dxc.community.pojo.QuestionDomain">
         INSERT INTO
         <include refid="BASE_TABLENAME"/>
         <trim prefix="(" suffix=")">
@@ -33,6 +35,23 @@
         WHERE
         qid=#{qid,jdbcType=INTEGER}
     </delete>
+
+    <resultMap id="BASE_COLUMNS_SELECT" type="com.dxc.community.dto.QuestionDto">
+        <result column="qid" property="qid"></result>
+        <result column="title" property="title"></result>
+        <result column="description" property="description"></result>
+        <result column="gmt_create" property="gmt_create"></result>
+        <result column="gmt_modify" property="gmt_modify"></result>
+        <result column="creator" property="creator"></result>
+        <result column="view_count" property="view_count"></result>
+        <result column="like_count" property="like_count"></result>
+        <result column="reply_count" property="reply_count"></result>
+        <result column="username" property="username"></result>
+        <collection property="tagsList" ofType="com.dxc.community.pojo.Tags">
+            <id column="tid" property="tid"></id>
+            <result column="tagName" property="tagname"></result>
+        </collection>
+    </resultMap>
 
 
     <select id="getList"
@@ -54,22 +73,40 @@
                 AND creator=#{creator,jdbcType=INTEGER}
             </if>
         </where>
+        order by a.gmt_create desc
     </select>
 
 
-    <select id="getById" parameterType="java.lang.Integer"
+    <select id="getRelatedListById" parameterType="java.lang.Integer"
             resultType="com.dxc.community.dto.QuestionDto">
+        SELECT DISTINCT a.qid,a.title,a.gmt_create
+        FROM
+        <include refid="BASE_TABLENAME"/>
+        AS a
+        join t_tagships as c on a.qid=c.qid
+        join t_tags as d on d.tid=c.tid
+        JOIN (
+        select tid from t_tagships where qid=#{qid,jdbcType=INTEGER}
+        ) e on d.tid=e.tid
+        order by a.gmt_create desc
+
+    </select>
+
+    <select id="getById" parameterType="java.lang.Integer"
+            resultMap="BASE_COLUMNS_SELECT">
         SELECT
-        <include refid="BASE_COLUNMS"/>,username
+        <include refid="BASE_COLUNMS"/>,username,d.*
         FROM
         <include refid="BASE_TABLENAME"/>
         AS a
         LEFT JOIN
         <include refid="TABLENAME_USER"/>
         AS b ON a.creator=b.uid
+        LEFT JOIN t_tagships AS c ON a.qid=c.qid
+        JOIN t_tags AS d ON d.tid=c.tid
         WHERE
-        qid=#{qid,jdbcType=INTEGER}
-
+        a.qid=#{qid,jdbcType=INTEGER}
+        order by a.gmt_create desc
     </select>
 
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxc.community.dao.TagShipsMapper">
+    <sql id="BASE_TABLENAME">
+        t_tagships
+    </sql>
+    <insert id="InsertBatch">
+        INSERT INTO
+        <include refid="BASE_TABLENAME"/>
+        <trim prefix="(" suffix=")">
+            qid,tid
+        </trim>
+        VALUES
+        <foreach collection="list" item="TagShips" separator=",">
+
+            (#{TagShips.qid,jdbcType=INTEGER},#{TagShips.tid,jdbcType=BIGINT})
+
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        qid = VALUES(qid),
+        tid = VALUES(tid)
+    </insert>
+</mapper>

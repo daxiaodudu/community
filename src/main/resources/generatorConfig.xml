@@ -54,7 +54,7 @@
         <!-- tableName是数据库中的表名，domainObjectName是生成的JAVA模型名，后面的参数不用改，要生成更多的表就在下面继续加table标签 -->
 <!--        <table tableName="t_contents" domainObjectName="Contents"-->
 <!--           ></table>-->
-        <table tableName="t_qcomments" domainObjectName="Qcomments"></table>
-
+        <table tableName="t_tags" domainObjectName="Tags"></table>
+<!--        <table tableName="t_tags" domainObjectName="Tags"></table>-->
     </context>
 </generatorConfiguration>

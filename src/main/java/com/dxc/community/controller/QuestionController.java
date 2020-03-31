@@ -45,8 +45,12 @@ public class QuestionController {
         PageInfo<Qcomments> qcommentsPageInfo = commentsService.getListByParentId(questionDto.getQid().longValue(), 1, 10000, 1);
 
 
+        //相关问题
+        List<QuestionDto> relatedList = questionsService.getRelatedListById(id);
+
         model.addAttribute("questionDto", questionDto);
         model.addAttribute("qcommentsPageInfo", qcommentsPageInfo);
+        model.addAttribute("relatedList", relatedList);
         return "question";
     }
 
