@@ -7,10 +7,7 @@ import com.dxc.community.dao.*;
 import com.dxc.community.dto.QuestionDto;
 import com.dxc.community.dto.ResultInfo;
 import com.dxc.community.exception.BusinessException;
-import com.dxc.community.pojo.Contents;
-import com.dxc.community.pojo.QuestionDomain;
-import com.dxc.community.pojo.TagShips;
-import com.dxc.community.pojo.Tags;
+import com.dxc.community.pojo.*;
 import com.dxc.community.service.questions.QuestionsService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,8 +17,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,23 +56,25 @@ public class QuestionsServiceImpl implements QuestionsService {
 
             //插入tags
             String[] split = questionDomain.getTags().split(",");
-            List<Tags> list= new ArrayList<>();
-            for (String s : split) {
-                Tags tags = new Tags();
-                tags.setTagname(s);
-                list.add(tags);
-            }
 //            list = Arrays.stream(split).map(x -> {
 //                Tags tags = new Tags();
 //                tags.setTagname(x);
 //                return tags;
 //            }).collect(Collectors.toList());
+            List<String> list = Arrays.stream(split).filter(x ->
+                    StringUtils.isBlank(x.trim()) == false
+            ).map(x -> x.trim()).distinct().collect(Collectors.toList());
+
 
             this.tagsExtMapper.insertBatch(list);
 
+            TagsExample example = new TagsExample();
+            example.createCriteria().andTagnameIn(list);
+
+            List<Tags> tags = this.tagsMapper.selectByExample(example);
             this.questionsDao.addQuestion(questionDomain);
             ArrayList<TagShips> tagShips = new ArrayList<>();
-            list.forEach(x -> {
+            tags.forEach(x -> {
                 TagShips ships = new TagShips();
                 ships.setQid(questionDomain.getQid());
                 ships.setTid(x.getTid());
@@ -82,7 +83,8 @@ public class QuestionsServiceImpl implements QuestionsService {
             this.tagShipsMapper.InsertBatch(tagShips);
 
             return ResultInfo.success();
-        } catch (Exception ex) {
+        } catch (
+                Exception ex) {
             return ResultInfo.fail(ex.getMessage());
         }
 

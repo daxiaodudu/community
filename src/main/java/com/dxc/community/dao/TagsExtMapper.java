@@ -15,5 +15,5 @@ import java.util.List;
 @Mapper
 public interface TagsExtMapper {
 
-    int insertBatch(@Param("list")List<Tags> list);
+    int insertBatch(List<String> list);
 }

@@ -6,6 +6,7 @@ import com.dxc.community.dto.ResultInfo;
 import com.dxc.community.pojo.QuestionDomain;
 import com.dxc.community.pojo.UserDomain;
 import com.dxc.community.service.questions.QuestionsService;
+import com.dxc.community.service.tags.TagsService;
 import com.dxc.community.utils.DuDuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
 
 /**
  * description: publishController <br>
@@ -30,9 +32,14 @@ public class PublishController {
     @Autowired
     private QuestionsService questionsService;
 
+    @Autowired
+    private TagsService tagsService;
+
     @GetMapping("publish")
     public String publish(Model model) {
         model.addAttribute("questionDto", new QuestionDto());
+        model.addAttribute("tags", "");
+        model.addAttribute("tagsList",tagsService.getList());
         return "publish";
     }
 
@@ -41,8 +48,9 @@ public class PublishController {
                        Model model) {
 
         QuestionDto questionDto = questionsService.getById(id);
-
+        model.addAttribute("tags", questionDto.getTagsList().stream().map(x -> x.getTagname()).collect(Collectors.joining(",")));
         model.addAttribute("questionDto", questionDto);
+        model.addAttribute("tagsList",tagsService.getList());
         return "publish";
     }
 
@@ -65,6 +73,11 @@ public class PublishController {
         }
 
         if (!resultInfo.isSuccess()) {
+
+            model.addAttribute("tags", questionDomain.getTags());
+            model.addAttribute("questionDto", questionDomain);
+            model.addAttribute("tagsList",tagsService.getList());
+
             model.addAttribute("publishError", resultInfo.getMsg());
             return "publish";
         } else {

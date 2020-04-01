@@ -2,21 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dxc.community.dao.TagsExtMapper">
     <sql id="BASE_TABLENAME">t_tags</sql>
-<!--   mysql默认接受sql的大小是1048576(1M)，即第三种方式若数据量超过1M会报如下异常：
-（可通过调整MySQL安装目录下的my.ini文件中[mysqld]段的＂max_allowed_packet = 1M＂）  -->
-<insert id="insertBatch" useGeneratedKeys="true" keyProperty="tid" >
-INSERT INTO
-<include refid="BASE_TABLENAME" />
-<trim prefix="(" suffix=")">
-    tagName
-</trim>
-    VALUES
-    <foreach collection="list" item="Tags"  separator =",">
+    <!--   mysql默认接受sql的大小是1048576(1M)，即第三种方式若数据量超过1M会报如下异常：
+    （可通过调整MySQL安装目录下的my.ini文件中[mysqld]段的＂max_allowed_packet = 1M＂）  -->
+<!--    useGeneratedKeys="true" keyProperty="tid"-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO t_tags (tagName)
+        VALUES
+        <foreach collection="list" item="item"  separator=",">
 
-        (#{Tags.tagname,jdbcType=VARCHAR})
+           (#{item,jdbcType=VARCHAR})
 
-    </foreach >
-    ON DUPLICATE KEY UPDATE
-    tagName = values(tagName)
-</insert>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        tagName = values(tagName)
+    </insert>
 </mapper>
