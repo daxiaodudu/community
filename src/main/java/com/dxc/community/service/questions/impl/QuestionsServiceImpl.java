@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     private TagShipsMapper tagShipsMapper;
 
     @Override
+    @Transactional
     public ResultInfo addQuestion(QuestionDomain questionDomain) {
         ResultInfo resultInfo = checkModel(questionDomain);
         if (!resultInfo.isSuccess()) {
@@ -80,7 +82,9 @@ public class QuestionsServiceImpl implements QuestionsService {
                 ships.setTid(x.getTid());
                 tagShips.add(ships);
             });
+
             this.tagShipsMapper.InsertBatch(tagShips);
+
 
             return ResultInfo.success();
         } catch (

@@ -40,4 +40,6 @@ public interface ErrorConstant {
         static final String TYPE_IS_EMPTY = "TYPE 不能为空";
     }
 
+
+
 }

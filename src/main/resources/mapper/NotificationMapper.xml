@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dxc.community.dao.NotificationDao">
+
+    <sql id="TABLE_BASENAME">
+        t_notification
+    </sql>
+    <sql id="BASE_COLUMN">
+        nid,notifier,receiver,outerId,type,gmt_create,status
+    </sql>
+
+
+    <insert id="insert" parameterType="com.dxc.community.pojo.NotificationDomain">
+        INSERT INTO
+        <include refid="TABLE_BASENAME"/>
+        <trim prefix="(" suffix=")">
+            notifier,receiver,outerId,type,gmt_create,status
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")">
+            #{notifier,jdbcType=INTEGER},#{receiver,jdbcType=INTEGER},
+            #{outerId,jdbcType=BIGINT},#{type,jdbcType=INTEGER},
+            UNIX_TIMESTAMP(NOW()),1
+        </trim>>
+    </insert>
+
+    <update id="modifyStatus" parameterType="java.lang.Long">
+        UPDATE
+        <include refid="TABLE_BASENAME"/>
+        SET status=2
+        WHERE
+        nid=#{nid,jdbcType=BIGINT}
+
+    </update>
+
+
+    <select id="getSelect"
+            parameterType="com.dxc.community.pojo.NotificationDomain"
+            resultType="com.dxc.community.pojo.NotificationDomain"
+    >
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="TABLE_BASENAME"/>
+        <where>
+            <if test="nid !=null">
+                AND nid=#{nid,jdbcType=BIGINT}
+            </if>
+            <if test="notifier !=null">
+                AND notifier=#{notifier,jdbcType=INTEGER}
+            </if>
+            <if test="receiver !=null">
+                AND receiver=#{receiver,jdbcType=INTEGER}
+            </if>
+            <if test="outerId !=null">
+                AND outerId=#{outerId,jdbcType=BIGINT}
+            </if>
+            <if test="type !=null">
+                AND type=#{type,jdbcType=INTEGER}
+            </if>
+            <if test="status!=null">
+                AND status=#{status,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getList" parameterType="com.dxc.community.pojo.NotificationDomain"
+            resultType="com.dxc.community.dto.NotificationDto">
+        SELECT
+        a.nid,
+        a.notifier,
+        d.username AS notifierName,
+        a.receiver,
+        a.outerId,
+        CASE
+        a.type
+        WHEN 1 THEN
+        b.title ELSE c.content
+        END outerTitle,
+        a.type,
+        a.gmt_create
+        FROM
+        <include refid="TABLE_BASENAME"/>
+        as a
+        LEFT JOIN t_questions AS b ON a.outerId = b.qid
+        LEFT JOIN t_qcomments AS c ON a.outerId = c.cid
+        LEFT JOIN t_users AS d ON a.notifier = d.uid
+
+        WHERE a.receiver=#{receiver,jdbcType=INTEGER}
+        AND a.status=#{status,jdbcType=INTEGER}
+        ORDER BY a.gmt_create DESC
+    </select>
+</mapper>

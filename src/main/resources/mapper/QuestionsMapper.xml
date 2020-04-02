@@ -109,6 +109,17 @@
         order by a.gmt_create desc
     </select>
 
+    <select id="getSelectByKey" resultType="com.dxc.community.pojo.QuestionDomain"
+            parameterType="java.lang.Integer">
+        SELECT
+        <include refid="BASE_COLUNMS"/>
+        FROM
+        <include refid="BASE_TABLENAME"/>
+        AS a
+        WHERE
+        a.qid=#{qid,jdbcType=INTEGER}
+
+    </select>
 
     <update id="editQuestion">
         UPDATE

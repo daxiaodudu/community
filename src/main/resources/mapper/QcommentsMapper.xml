@@ -138,7 +138,11 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.dxc.community.pojo.Qcomments">
+  <insert id="insert"
+          parameterType="com.dxc.community.pojo.Qcomments"
+          useGeneratedKeys="true"
+          keyProperty="cid"
+  >
     insert into t_qcomments (cid, parent_id, type, 
       creator, gmt_create, gmt_modified, 
       like_count, reply_count, content

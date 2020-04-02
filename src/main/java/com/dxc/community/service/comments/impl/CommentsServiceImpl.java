@@ -2,14 +2,17 @@ package com.dxc.community.service.comments.impl;
 
 import com.dxc.community.constant.CommentTypeEnum;
 import com.dxc.community.constant.ErrorConstant;
+import com.dxc.community.dao.NotificationDao;
 import com.dxc.community.dao.QcommentExtMapper;
 import com.dxc.community.dao.QcommentsMapper;
 import com.dxc.community.dao.QuestionsDao;
 import com.dxc.community.dto.CommentsDto;
 import com.dxc.community.dto.QuestionDto;
 import com.dxc.community.exception.BusinessException;
+import com.dxc.community.pojo.NotificationDomain;
 import com.dxc.community.pojo.Qcomments;
 import com.dxc.community.pojo.QcommentsExample;
+import com.dxc.community.pojo.QuestionDomain;
 import com.dxc.community.service.comments.CommentsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +41,9 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Autowired
     private QcommentExtMapper qcommentExtMapper;
+
+    @Autowired
+    private NotificationDao notificationDao;
 
     @Override
     public PageInfo<Qcomments> getListByParentId(Long parentId, Integer type, int pageSize, int pageNo) {
@@ -90,13 +96,38 @@ public class CommentsServiceImpl implements CommentsService {
         qcomments.setLikeCount(0L);
         qcomments.setReplyCount(0L);
         this.qcommentsMapper.insert(qcomments);
+
+        //添加通知消息
+        NotificationDomain notification = new NotificationDomain();
+        notification.setNotifier(qcommentsDto.getCreator());
+        notification.setOuterId(qcommentsDto.getParent_id());
+        notification.setType(qcommentsDto.getType());
+        notification.setGmt_create(System.currentTimeMillis());
+        notification.setStatus(1);
+
+
         //添加回复数
         if (qcommentsDto.getType().equals(CommentTypeEnum.COMMENT.getType())) {
+
+            notification.setReceiver(
+                    this.questionsDao.getSelectByKey(
+                            qcommentsDto.getParent_id().intValue()
+                    ).getCreator()
+            );
             this.questionsDao.hitReplyCount(qcommentsDto.getParent_id().intValue());
         } else {
+            notification.setReceiver(
+                    this.qcommentsMapper.selectByPrimaryKey(
+                            qcommentsDto.getParent_id()
+                    ).getCreator()
+            );
             this.qcommentExtMapper.hitReplyCount(qcommentsDto.getParent_id());
         }
+
+        this.notificationDao.insert(notification);
+
     }
+
 
     @Override
     public void deleteComment(Integer cid) {
