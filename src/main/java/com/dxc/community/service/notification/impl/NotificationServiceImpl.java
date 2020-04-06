@@ -52,4 +52,9 @@ public class NotificationServiceImpl implements NotificationService {
         return new PageInfo<>(list);
 
     }
+
+    @Override
+    public int getUnread(Integer receiver) {
+        return this.notificationDao.getUnread(receiver);
+    }
 }

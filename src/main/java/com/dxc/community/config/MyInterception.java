@@ -2,6 +2,7 @@ package com.dxc.community.config;
 
 import com.dxc.community.constant.WebConst;
 import com.dxc.community.pojo.UserDomain;
+import com.dxc.community.service.notification.NotificationService;
 import com.dxc.community.service.user.UserService;
 import com.dxc.community.utils.DuDuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class MyInterception implements HandlerInterceptor {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -31,6 +35,7 @@ public class MyInterception implements HandlerInterceptor {
         if (null != uid) {
             UserDomain userDomain = userService.getUserByid(uid);
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, userDomain);
+            request.setAttribute("getUnreadCount", notificationService.getUnread(userDomain.getUid()));
         } else {
             response.sendRedirect("/login");
             return false;
@@ -40,6 +45,7 @@ public class MyInterception implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
 
     }
 

@@ -37,9 +37,9 @@
                    th:class="${(profileName=='myQuestion'?'active ':' ')+'list-group-item '}">
                     我的问题
                 </a>
-                <a th:href="@{/profile/myFollow}"
-                   th:class="${(profileName=='myFollow'?'active ':' ')+'list-group-item '}">我的关注 <span
-                        class="badge">14</span></a>
+                <a th:href="@{/replies}"
+                   class="list-group-item">最新回复 <span
+                        class="badge" th:text="${getUnreadCount!=null?getUnreadCount:0}"></span></a>
             </div>
         </div>
     </div>

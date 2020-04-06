@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head('最新回复')">
+</head>
+<body style="background-color:#efefef;">
+<div th:replace="comm/NavigationBar ::NavBar"></div>
+<div class="container-fluid" style="margin:30px;background-color:white;">
+    <div class="row">
+        <div class="col-lg-8 col-md-8">
+            <div>
+                <h3></span>最新回复</h3>
+                <hr>
+            </div>
+            <div th:each="item : ${list.list}" class="media">
+                <div class="media-body">
+                    <p>
+                        <a href="javascript:void(0);"> <span th:text="${item.notifierName}"></span></a>&nbsp;回复了你的<span
+                            th:text="${item.type==1?'问题':'评论'}"></span>:
+                        <a href="javascript:void(0);"> <span th:text="${item.outerTitle}"></span></a>
+                        <span class="label label-danger" th:if="${item.status==1}">未读</span>
+                    </p>
+                    <label class="text-des" th:text="${#dates.format(item.gmt_create*1000,'yyyy-MM-dd HH:mm:ss')}">
+
+                    </label>
+                </div>
+            </div>
+            <div th:replace="comm/pagination::pagination(${list},'/replies')"></div>
+        </div>
+        <div class="col-lg-4 col-md-4" style="margin-top: 20px;">
+            <div class="list-group">
+                <a th:href="@{/profile/myQuestion}"
+                   class="list-group-item">
+                    我的问题
+                </a>
+                <a th:href="@{/profile/myFollow}"
+                   class="active list-group-item">最新回复 <span
+                        class="badge" th:text="${getUnreadCount!=null?getUnreadCount:0}"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

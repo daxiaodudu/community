@@ -23,6 +23,7 @@ function commentsSubmit(obj, docid) {
         success: function (data) {
             if (data.code == "success") {
                 $("#" + docid).empty();
+                window.location.reload();
             } else {
                 alert(data.msg);
             }

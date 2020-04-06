@@ -21,7 +21,7 @@
             #{notifier,jdbcType=INTEGER},#{receiver,jdbcType=INTEGER},
             #{outerId,jdbcType=BIGINT},#{type,jdbcType=INTEGER},
             UNIX_TIMESTAMP(NOW()),1
-        </trim>>
+        </trim>
     </insert>
 
     <update id="modifyStatus" parameterType="java.lang.Long">
@@ -73,6 +73,7 @@
         d.username AS notifierName,
         a.receiver,
         a.outerId,
+        a.status,
         CASE
         a.type
         WHEN 1 THEN
@@ -87,8 +88,24 @@
         LEFT JOIN t_qcomments AS c ON a.outerId = c.cid
         LEFT JOIN t_users AS d ON a.notifier = d.uid
 
+        <where>
+            <if test="receiver!=null ">
+                AND a.receiver=#{receiver,jdbcType=INTEGER}
+            </if>
+            <if test="status!=null ">
+                AND a.status=#{status,jdbcType=INTEGER}
+            </if>
+        </where>
+        ORDER BY a.status ,a.gmt_create DESC
+    </select>
+
+
+    <select id="getUnread" resultType="java.lang.Integer"
+            parameterType="java.lang.Integer">
+        SELECT COUNT(1) FROM
+        <include refid="TABLE_BASENAME"/>
+        AS a
         WHERE a.receiver=#{receiver,jdbcType=INTEGER}
-        AND a.status=#{status,jdbcType=INTEGER}
-        ORDER BY a.gmt_create DESC
+        AND a.status=1
     </select>
 </mapper>

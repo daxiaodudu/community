@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="comm/head::head('通知')">
+</head>
+<body style="background-color:#efefef;">
+<div th:replace="comm/NavigationBar ::NavBar"></div>
+<div class="container-fluid" style="margin:30px;background-color:white;">
+    <div class="row highlight">
+        <div class="col-xs-12 col-md-8 ">
+            <div>
+                <h3></span>通知</h3>
+                <hr>
+            </div>
+            <div>
+                <table class="table table-hover">
+                    <tbody>
+                    <tr th:each="notice :${list.getList()}">
+                        <td>
+                            <a href="javascript:void(0);"> <span th:text="${notice.notifierName}"></span></a>&nbsp;回复了你的<span
+                                th:text="${notice.type==1?'问题':'评论'}"></span>:
+                            <a href="javascript:void(0);"> <span th:text="${notice.outerTitle}"></span></a>
+                        </td>
+                        <td>
+                            <span class="pull-right"
+                                   th:text="${#dates.format(notice.gmt_create*1000,'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="comm/pagination::pagination(${list},'/notice')"></div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            右边栏
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

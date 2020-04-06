@@ -5,6 +5,7 @@ import com.dxc.community.pojo.NotificationDomain;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import javax.management.Notification;
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ public interface NotificationDao {
     NotificationDomain getSelect(NotificationDomain notificationDomain);
 
     List<NotificationDto> getList(NotificationDomain notificationDomain);
+
+
+    int getUnread(Integer receiver);
 
 
 }

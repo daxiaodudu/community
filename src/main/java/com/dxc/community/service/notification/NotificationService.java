@@ -20,4 +20,6 @@ public interface NotificationService {
 
     PageInfo<NotificationDto> getList(NotificationDomain notificationDomain, int pageSize, int pageNo);
 
+    int getUnread(Integer receiver);
+
 }
