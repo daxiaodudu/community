@@ -1,3 +1,24 @@
+$(function () {
+
+    var testEditormdView = editormd.markdownToHTML("description-view", {
+        //markdown        : markdown ,//+ "\r\n" + $("#append-test").text(),
+        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+        // htmlDecode      : "style,script,iframe",  // you can filter tags decode
+        //toc             : false,
+        // tocm            : true,    // Using [TOCM]
+        //tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+        //gfm             : false,
+        //tocDropdown     : true,
+        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+        //  emoji: true,
+        //  taskList: true,
+        //  tex: true,  // 默认不解析
+        //  flowChart: true,  // 默认不解析
+        //   sequenceDiagram: true,  // 默认不解析
+    });
+});
+
+
 function post_comments() {
     const obj = {};
     obj["parent_id"] = $("#comment_qid").val();
@@ -53,6 +74,7 @@ function comments_clickLike(o) {
     });
 }
 
+
 function showOrHidden(obj) {
 
     const o = "#collapseQuestion_" + obj;
@@ -65,7 +87,7 @@ function showOrHidden(obj) {
             type: "GET",
             url: "/question/secondReply/" + obj,
             // data: JSON.stringify(obj),
-           // contentType: "application/json",
+            // contentType: "application/json",
             success: function (htmlText) {
                 $("#second_reply_" + obj).html(htmlText);
             },

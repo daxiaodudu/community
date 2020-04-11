@@ -1,3 +1,12 @@
+$(function() {
+    var editor = editormd("description-edit", {
+        // width  : "100%",
+         height : "400px",
+        path   : "/js/lib/"
+    });
+});
+
+
 function setTagsValue(val) {
     const oldValue = $("#tags").val();
     if (oldValue.indexOf(val) == -1) {

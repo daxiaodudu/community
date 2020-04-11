@@ -17,7 +17,11 @@
                 </label>
                 <hr>
                 <!--                正文内容-->
-                <div class=" col-lg-12 col-md-12" th:utext="${questionDto.description}">
+                <div class=" col-lg-12 col-md-12" id="description-view">
+
+                    <textarea style="display:none;"
+                              th:text="${questionDto.description}"></textarea>
+
                 </div>
                 <hr>
                 <!--                标签-->
