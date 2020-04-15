@@ -1,8 +1,11 @@
-$(function() {
+$(function () {
     var editor = editormd("description-edit", {
         // width  : "100%",
-         height : "400px",
-        path   : "/js/lib/"
+        height: "400px",
+        path: "/js/lib/",
+        imageUpload: true,
+        imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        imageUploadURL: "/uploadImg",
     });
 });
 
@@ -22,6 +25,6 @@ function disOrHiddenTags() {
     if (display == undefined || display != "none") {
         $("#tagPanel").css("display", "none");
     } else {
-        $("#tagPanel").css("display","");
+        $("#tagPanel").css("display", "");
     }
 }
