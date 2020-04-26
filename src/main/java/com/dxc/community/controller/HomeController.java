@@ -43,11 +43,15 @@ public class HomeController {
     public String Index(
             HttpServletRequest httpServletRequest,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo
-            , Model model) {
+            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+            @RequestParam(value = "search", defaultValue = "") String search,
+            Model model) {
 
         log.info("进入Index");
-        PageInfo<QuestionDto> list = questionsService.getList(new QuestionDomain(), pageSize, pageNo);
+
+        QuestionDomain questionDomain = new QuestionDomain();
+        questionDomain.setTitle(search);
+        PageInfo<QuestionDto> list = questionsService.getList(questionDomain, pageSize, pageNo);
         model.addAttribute("list", list);
         return "index";
     }
