@@ -87,6 +87,9 @@
             <appender-ref ref="RollingFileDebug"/>
         </root>
 
+        <!--自定义自己的日志怎么打印出来-->
+        <logger name="com.dxc.community.dao" level="debug"></logger>
+
         <!--记录druid-sql的记录-->
         <logger name="druid.sql.Statement" level="debug" additivity="false">
             <appender-ref ref="druidSqlRollingFile"/>

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -18,9 +19,21 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
-System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        String properties = System.getProperty("user.dir");
-        System.out.println(properties);
+        Properties properties = System.getProperties();
+        Set<Object> objects = properties.keySet();
+        for (Object object : objects) {
+            System.out.println(object);
+        }
+
+//        for (ob:
+//             properties.keySet()) {
+//            System.out.println(ob);
+//        }
+
+        System.out.println("xxxx");
+//System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//        String properties = System.getProperty("user.dir");
+//        System.out.println(properties);
 
 
 

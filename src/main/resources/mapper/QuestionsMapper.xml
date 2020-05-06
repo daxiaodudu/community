@@ -51,6 +51,7 @@
             <id column="tid" property="tid"></id>
             <result column="tagName" property="tagname"></result>
         </collection>
+
     </resultMap>
 
 
