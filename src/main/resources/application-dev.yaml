@@ -1,9 +1,24 @@
-
 spring:
+  redis:
+    port: 6379
+    host: 192.169.1.124
+    password:
+    lettuce:
+      pool:
+        max-active: 8 #连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1 #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 #连接池中的最大空闲连接
+        min-idle: 0 #连接池中最小空闲连接
+      shutdown-timeout: 100 #连接超时时间（毫秒）
+  session:
+    redis:
+      namespace: dxc_community #session的存储空间
+    store-type: redis
+    timeout: PT1H #Session过期时间 PT开头 “D”-天  ‘H’-小时  ‘M’-分钟  ‘S’ -秒
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://172.17.128.166:3306/dudu_blog?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://192.169.1.124:3306/dudu_blog?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     dirver: com.mysql.jdbc.Driver
     #切换数据源
     type: com.alibaba.druid.pool.DruidDataSource
@@ -42,15 +57,34 @@ spring:
     proxy-target-class: true
   servlet:
     multipart:
-#      max-file-size: 10Mb
-#      max-request-size: 100Mb
+    #      max-file-size: 10Mb
+    #      max-request-size: 100Mb
+  #添加 性能监控的服务端url
+  boot:
+    admin:
+      client:
+        url:  http://localhost:8080
+
+
+
 
 logging:
   config: classpath:log4j2.xml
 
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml #扫描映射配置文件
+  #定义包的别名，如果加了 则mapper。xml中resultType 可以不用写包名了 直接类名就可以了
   type-aliases-package: com.dxc.community.pojo
 
 server:
   port: 8888
+
+#开启性能监控
+management:
+  endpoints:
+    web:
+      #默认的值
+      base-path: /actuator
+      exposure:
+        #*代表开启所有
+        include:  "*"
